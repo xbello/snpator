@@ -1,0 +1,20 @@
+Ensembl API
+
+http://rest.ensembl.org/variation/human/rs11576518?content-type=application/json;genotypes=1
+
+{"source": "Variants (including SNPs and indels) imported from dbSNP",
+ "mappings":
+  [
+   {"location": "1:67216513-67216513",
+    "assembly_name": "GRCh38",
+    "end": 67216513,
+    "seq_region_name":"1",
+    "strand": 1,
+    "coord_system": "chromosome",
+    "allele_string":"G/A", "start":67216513}
+  ],
+ "name": "rs11576518",
+ "genotypes":[
+  {"genotype":"G|G","gender":"Male","individual":"1000GENOMES:phase_3:HG00096"},
+  ...
+  {"submission_id":"ss118770010","genotype":"A|A","gender":"Unknown","individual":"NA18507"}]
