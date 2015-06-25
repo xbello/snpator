@@ -8,6 +8,12 @@ from requests.models import Response
 import ensemblapi
 
 
+def fixed_get_rs(rs_id):
+    with open(os.path.join(os.path.dirname(__file__),
+                           "{}.json".format(rs_id))) as json_file:
+        return json.load(json_file)
+
+
 class TestEnsemblAPI(TestCase):
     def setUp(self):
         with open(os.path.join(os.path.dirname(__file__),
@@ -50,7 +56,9 @@ class TestEnsemblAPI(TestCase):
 
         self.assertTrue("genotypes" in rs_json.keys())
 
-    def test_can_get_a_list_of_rs(self):
+    @mock.patch("ensemblapi.get_rs", side_effect=fixed_get_rs)
+    def test_can_get_a_list_of_rs(self, mock_get_rs):
+
         rs_list_json = ensemblapi.get_list_of_rs(["rs10050860",
                                                   "rs10065172"])
 
