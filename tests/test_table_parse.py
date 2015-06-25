@@ -19,11 +19,11 @@ class TestParseTable(TestCase):
                                "individual": "NA18576",
                                "gender": "Female"}]
 
-    def test_we_get_the_rs_line(self):
-        self.assertEqual(table_parser.get_rs(self.sample_file)[:2],
-                         ["rs10050860", "rs10065172"])
-
     def test_parse_genotype_json_into_table(self):
         self.assertEqual(
             table_parser.genotype_to_lines(self.genotype_json),
             {"NA18576": "CC/CC"})
+
+    def test_we_get_the_rs_line(self):
+        self.assertEqual(table_parser.get_rs(self.sample_file)[:2],
+                         ["rs10050860", "rs10065172"])

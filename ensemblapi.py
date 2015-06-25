@@ -2,6 +2,20 @@
 import requests
 
 
+def get_genotypes(rs_list, individuals):
+    """Return a dict with rs as keys and a dict with individuals:genotypes."""
+    all_rs = get_list_of_rs(rs_list)
+
+    genotypes = {}.fromkeys(rs_list, {})
+
+    for rs_data in all_rs:
+        for individual in individuals:
+            genotypes[rs_data["name"]].setdefault(
+                individual, get_individual(individual, rs_data))
+
+    return genotypes
+
+
 def get_individual(individual, ensembl_json):
     """Return a list with the genotypes of the individual."""
 
