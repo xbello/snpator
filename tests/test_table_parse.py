@@ -42,8 +42,10 @@ class TestParseTable(TestCase):
             table_parser.dict_into_table({"rs10065172": {"NA18576": "CC/CC"}}),
             ["\trs10065172", "NA18576\tCC/CC"])
 
-        rs_dict = OrderedDict({"rs10050860": {"NA18576": "CC/CC"},
-                               "rs10065172": {"NA18576": "TT"}})
+        rs_dict = OrderedDict()
+        rs_dict["rs10050860"] = {"NA18576": "CC/CC"}
+        rs_dict["rs10065172"] = {"NA18576": "TT"}
+
         self.assertEqual(
             table_parser.dict_into_table(rs_dict),
             ["\trs10050860\trs10065172", "NA18576\tCC/CC\tTT"])

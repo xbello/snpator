@@ -7,13 +7,16 @@ THRESHOLD = 5
 
 def dict_into_table(genotypes):
     """Return a list with lines TAB splitted with the genotypes."""
-    header = "\t" + "\t".join(genotypes.keys())
+    rs_keys = genotypes.keys()
+    header = "\t" + "\t".join(rs_keys)
 
     lines = [header]
 
     individuals = OrderedDict()
 
-    for rs, genotype in genotypes.items():
+    #for rs, genotype in genotypes.items():
+    for rs in rs_keys:
+        genotype = genotypes[rs]
         for individual in genotype.keys():
             individuals.setdefault(individual, [])
             individuals[individual].append(genotype[individual])
