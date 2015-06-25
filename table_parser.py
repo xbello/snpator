@@ -4,6 +4,21 @@
 THRESHOLD = 5
 
 
+def genotype_to_lines(genotypes):
+    """Return a list of lines with the genotypes in the dict."""
+
+    rows = {}
+
+    for genotype in genotypes:
+        rows.setdefault(genotype["individual"], [])
+        rows[genotype["individual"]].append(
+            genotype["genotype"].replace("|", ""))
+        rows[genotype["individual"]] = \
+            ["/".join(rows[genotype["individual"]])]
+
+    return rows
+
+
 def get_rs(filename):
     """Return a list with the rs of the file."""
     rs_list = []
