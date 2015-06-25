@@ -20,6 +20,6 @@ def get_rs(rs_id):
         "http://rest.ensembl.org/variation/human/{}".format(rs_id) +\
         "?content-type=application/json;genotypes=1"
 
-    json = requests.get(ensembl_uri).json()
+    json_response = requests.get(ensembl_uri).json()
 
-    return json
+    return json_response

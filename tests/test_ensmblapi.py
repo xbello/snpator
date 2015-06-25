@@ -1,19 +1,23 @@
 """Tests for the Ensembl API shortcuts."""
 import json
 import os
-from unittest import TestCase
+from unittest import mock, TestCase
+
+from requests.models import Response
 
 import ensemblapi
 
 
 class TestEnsemblAPI(TestCase):
-    def test_can_extract_data_for_individual(self):
+    def setUp(self):
         with open(os.path.join(os.path.dirname(__file__),
                                "rs10050860.json")) as json_file:
-            json_data = json.load(json_file)
+            self.json_data = json.load(json_file)
+
+    def test_can_extract_data_for_individual(self):
 
         self.assertCountEqual(
-            ensemblapi.get_individual("NA18576", json_data),
+            ensemblapi.get_individual("NA18576", self.json_data),
             [{"genotype": "C|C",
               "gender": "Female",
               "submission_id": "ss68942927",
@@ -23,9 +27,12 @@ class TestEnsemblAPI(TestCase):
               "individual": "NA18576",
               "gender": "Female"}])
 
+    @mock.patch("ensemblapi.requests.get")
+    @mock.patch("ensemblapi.requests.models.Response.json")
+    def test_can_get_ensembl_json_for_rs(self, json_mock, get_mock):
+        get_mock.return_value = Response()
+        json_mock.return_value = self.json_data
 
-class TestOnlineAccesses(TestCase):
-    def test_can_get_ensembl_json_for_rs(self):
         rs_json = ensemblapi.get_rs("rs10050860")
         self.assertEqual(
             rs_json["mappings"],
