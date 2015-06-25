@@ -13,6 +13,9 @@ class TestEnsemblAPI(TestCase):
         with open(os.path.join(os.path.dirname(__file__),
                                "rs10050860.json")) as json_file:
             self.json_data = json.load(json_file)
+        with open(os.path.join(os.path.dirname(__file__),
+                               "rs10065172.json")) as json_file:
+            self.json_data2 = json.load(json_file)
 
     def test_can_extract_data_for_individual(self):
 
@@ -46,3 +49,10 @@ class TestEnsemblAPI(TestCase):
               "start": 96786506}])
 
         self.assertTrue("genotypes" in rs_json.keys())
+
+    def test_can_get_a_list_of_rs(self):
+        rs_list_json = ensemblapi.get_list_of_rs(["rs10050860",
+                                                  "rs10065172"])
+
+        self.assertCountEqual(
+            rs_list_json, [self.json_data, self.json_data2])

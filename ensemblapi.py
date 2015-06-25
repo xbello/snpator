@@ -14,6 +14,16 @@ def get_individual(individual, ensembl_json):
     return genotypes
 
 
+def get_list_of_rs(list_of_rs):
+    """Return a list with all the Ensembl responses for a list of rs."""
+    list_of_jsons = []
+
+    for rs in list_of_rs:
+        list_of_jsons.append(get_rs(rs))
+
+    return list_of_jsons
+
+
 def get_rs(rs_id):
     """Return the JSON for a given rs_id."""
     ensembl_uri = \
