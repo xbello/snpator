@@ -2,6 +2,18 @@
 import requests
 
 
+def get_individual(individual, ensembl_json):
+    """Return a list with the genotypes of the individual."""
+
+    genotypes = []
+
+    for individual_genotype in ensembl_json["genotypes"]:
+        if individual in individual_genotype["individual"]:
+            genotypes.append(individual_genotype)
+
+    return genotypes
+
+
 def get_rs(rs_id):
     """Return the JSON for a given rs_id."""
     ensembl_uri = \
@@ -9,6 +21,5 @@ def get_rs(rs_id):
         "?content-type=application/json;genotypes=1"
 
     json = requests.get(ensembl_uri).json()
-    print(json)
 
     return json
