@@ -69,6 +69,7 @@ class TestEnsemblAPI(TestCase):
 
     @mock.patch("ensemblapi.get_rs", side_effect=fixed_get_rs)
     def test_fill_a_rs_dict_with_values(self, mock_get_rs):
+        self.maxDiff = None
         self.assertEqual(
             ensemblapi.get_genotypes(["rs10050860", "rs10065172"],
                                      ["NA18576"]),

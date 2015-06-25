@@ -6,12 +6,14 @@ def get_genotypes(rs_list, individuals):
     """Return a dict with rs as keys and a dict with individuals:genotypes."""
     all_rs = get_list_of_rs(rs_list)
 
-    genotypes = {}.fromkeys(rs_list, {})
+    genotypes = {}.fromkeys(rs_list)
 
-    for rs_data in all_rs:
+    for rs_json in all_rs:
+        genotypes[rs_json["name"]] = {}
         for individual in individuals:
-            genotypes[rs_data["name"]].setdefault(
-                individual, get_individual(individual, rs_data))
+            genotypes[rs_json["name"]].setdefault(individual, [])
+            genotypes[rs_json["name"]][individual] = \
+                get_individual(individual, rs_json)
 
     return genotypes
 
