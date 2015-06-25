@@ -26,4 +26,4 @@ class TestParseTable(TestCase):
     def test_parse_genotype_json_into_table(self):
         self.assertEqual(
             table_parser.genotype_to_lines(self.genotype_json),
-            {"NA18576": ["CC/CC"]})
+            {"NA18576": "CC/CC"})

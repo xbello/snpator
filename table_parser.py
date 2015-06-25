@@ -13,10 +13,8 @@ def genotype_to_lines(genotypes):
         rows.setdefault(genotype["individual"], [])
         rows[genotype["individual"]].append(
             genotype["genotype"].replace("|", ""))
-        rows[genotype["individual"]] = \
-            ["/".join(rows[genotype["individual"]])]
 
-    return rows
+    return {k: "/".join(v) for k, v in rows.items()}
 
 
 def get_rs(filename):
