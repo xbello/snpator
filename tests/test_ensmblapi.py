@@ -16,16 +16,14 @@ def fixed_get_rs(rs_id):
 
 class TestEnsemblAPI(TestCase):
     def setUp(self):
-        with open(os.path.join(os.path.dirname(__file__),
-                               "rs10050860.json")) as json_file:
-            self.json_data = json.load(json_file)
-        with open(os.path.join(os.path.dirname(__file__),
-                               "rs10065172.json")) as json_file:
-            self.json_data2 = json.load(json_file)
+        self.json_data = self._load_json("rs10050860")
+        self.json_data2 = self._load_json("rs10065172")
+        self.genotype_json = self._load_json("genotype_test")
 
+    def _load_json(self, json_id):
         with open(os.path.join(os.path.dirname(__file__),
-                               "genotype_test.json")) as json_file:
-            self.genotype_json = json.load(json_file)
+                               "{}.json".format(json_id))) as json_file:
+            return json.load(json_file)
 
     def test_can_extract_data_for_individual(self):
 
@@ -69,7 +67,8 @@ class TestEnsemblAPI(TestCase):
         self.assertCountEqual(
             rs_list_json, [self.json_data, self.json_data2])
 
-    def test_fill_a_rs_dict_with_values(self):
+    @mock.patch("ensemblapi.get_rs", side_effect=fixed_get_rs)
+    def test_fill_a_rs_dict_with_values(self, mock_get_rs):
         self.assertEqual(
             ensemblapi.get_genotypes(["rs10050860", "rs10065172"],
                                      ["NA18576"]),
