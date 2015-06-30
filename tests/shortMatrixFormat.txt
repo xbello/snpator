@@ -1,0 +1,5 @@
+             rs10050860   rs10065172   rs10489629   rs10489630   rs1056836
+14           CT           CT           TT           AA           GG
+15           CC           CC           CT           AC           CG
+Na10830      CT           CC           CC           CC           CG
+Na10831      CT           CC           TT           AA           CG

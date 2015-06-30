@@ -1,5 +1,4 @@
 """Test the table parser."""
-from collections import OrderedDict
 import json
 import os
 from unittest import TestCase
@@ -30,25 +29,31 @@ class TestParseTable(TestCase):
     def test_parse_genotype_json_into_dict(self):
         self.assertEqual(
             table_parser.genotype_to_dict(self.genotype_json),
-            {"rs10065172": {"NA18576": "CC/CC"}})
+            {"rs10065172": {"NA18576": "CC"}})
 
         self.assertEqual(
             table_parser.genotype_to_dict(self.multiple_rs_genotype),
-            {"rs10050860": {"NA18576": "CC/CC"},
+            {"rs10050860": {"NA18576": "CC"},
              "rs10065172": {"NA18576": "TT"}})
 
     def test_parse_genotype_dict_into_table(self):
         self.assertEqual(
-            table_parser.dict_into_table({"rs10065172": {"NA18576": "CC/CC"}}),
-            ["\trs10065172", "NA18576\tCC/CC"])
+            table_parser.dict_into_table(
+                ["rs10065172"], {"rs10065172": {"NA18576": "CC"}}),
+            ["\trs10065172", "NA18576\tCC"])
 
-        rs_dict = OrderedDict()
-        rs_dict["rs10050860"] = {"NA18576": "CC/CC"}
-        rs_dict["rs10065172"] = {"NA18576": "TT"}
+        rs_dict = {"rs10050860": {"NA18576": "CC"},
+                   "rs10065172": {"NA18576": "TT"}}
 
         self.assertEqual(
-            table_parser.dict_into_table(rs_dict),
-            ["\trs10050860\trs10065172", "NA18576\tCC/CC\tTT"])
+            table_parser.dict_into_table(
+                ["rs10050860", "rs10065172"], rs_dict),
+            ["\trs10050860\trs10065172", "NA18576\tCC\tTT"])
+
+        self.assertEqual(
+            table_parser.dict_into_table(
+                ["rs10065172", "rs10050860"], rs_dict),
+            ["\trs10065172\trs10050860", "NA18576\tTT\tCC"])
 
     def test_we_get_the_rs_line(self):
         self.assertEqual(table_parser.get_rs(self.sample_file)[:2],

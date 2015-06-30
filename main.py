@@ -7,11 +7,15 @@ def main(matrix):
     """Return a list of lines with the checks of the rs in the matrix."""
 
     rs_list = table_parser.get_rs(matrix)
-    checks = ensemblapi.get_genotypes(rs_list, ["NA10830", "NA10831"])
 
-    genotypes = table_parser.genotype_to_dict(checks)
+    if rs_list:
+        checks = ensemblapi.get_genotypes(rs_list, ["NA10830", "NA10831"])
 
-    return "\n".join(table_parser.dict_into_table(genotypes))
+        genotypes = table_parser.genotype_to_dict(checks)
+
+        return "\n".join(table_parser.dict_into_table(rs_list, genotypes))
+    else:
+        return "No rs header detected"
 
 
 if __name__ == "__main__":

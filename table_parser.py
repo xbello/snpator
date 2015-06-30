@@ -1,21 +1,18 @@
 """Parse a SNPs list of genotype."""
-from collections import OrderedDict
-
 # Threshold for the number of "rs" in a line to be the header.
 THRESHOLD = 5
 
 
-def dict_into_table(genotypes):
+def dict_into_table(rs_header, genotypes):
     """Return a list with lines TAB splitted with the genotypes."""
-    rs_keys = genotypes.keys()
-    header = "\t" + "\t".join(rs_keys)
+    header = "\t" + "\t".join(rs_header)
 
     lines = [header]
 
-    individuals = OrderedDict()
+    individuals = {}
 
     #for rs, genotype in genotypes.items():
-    for rs in rs_keys:
+    for rs in rs_header:
         genotype = genotypes[rs]
         for individual in genotype.keys():
             individuals.setdefault(individual, [])
@@ -35,11 +32,11 @@ def genotype_to_dict(all_genotypes):
     for rs, individuals in all_genotypes.items():
         rows.setdefault(rs, {})
         for individual, genotypes in individuals.items():
-            rows[rs].setdefault(individual, [])
+            rows[rs].setdefault(individual, "")
             for genotype in genotypes:
-                rows[rs][individual].append(
-                    genotype["genotype"].replace("|", ""))
-            rows[rs][individual] = "/".join(rows[rs][individual])
+                rows[rs][individual] =\
+                    genotype["genotype"].replace("|", "")
+                break
 
     return rows
 
@@ -51,7 +48,7 @@ def get_rs(filename):
         for line in snp_table:
             columns = line.split()
 
-            if len([_ for _ in columns if _.startswith("rs")]) > THRESHOLD:
+            if len([_ for _ in columns if _.startswith("rs")]) >= THRESHOLD:
                 rs_list = columns
 
     return rs_list
