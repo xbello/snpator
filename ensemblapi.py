@@ -1,5 +1,6 @@
 """Shortcuts to use the Ensembl REST API."""
 import requests
+import erequests
 
 
 def get_genotypes(rs_list, individuals):
@@ -32,12 +33,18 @@ def get_individual(individual, ensembl_json):
 
 def get_list_of_rs(list_of_rs):
     """Return a list with all the Ensembl responses for a list of rs."""
-    list_of_jsons = []
+    ensembl_uri = \
+        "http://rest.ensembl.org/variation/human/{}" +\
+        "?content-type=application/json;genotypes=1"
 
-    for rs in list_of_rs:
-        list_of_jsons.append(get_rs(rs))
+    # Create all the URL request strings
+    list_of_urls = [ensembl_uri.format(_) for _ in list_of_rs]
 
-    return list_of_jsons
+    # Put every request in a pool (unsent)
+    responses = (erequests.async.get(_) for _ in list_of_urls)
+
+    # Send every request and get the JSON from each one.
+    return [_.json() for _ in erequests.map(responses)]
 
 
 def get_rs(rs_id):

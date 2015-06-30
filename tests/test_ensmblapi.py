@@ -8,6 +8,19 @@ from requests.models import Response
 import ensemblapi
 
 
+class FakeJSON(object):
+    def __init__(self, rs):
+        self.rs = rs
+
+    def json(self):
+        return fixed_get_rs(self.rs)
+
+
+def avoid_call(request_generator):
+    return [FakeJSON(_.url.split("?")[0].split("/")[-1])
+            for _ in request_generator]
+
+
 def fixed_get_rs(rs_id):
     with open(os.path.join(os.path.dirname(__file__),
                            "{}.json".format(rs_id))) as json_file:
@@ -58,7 +71,7 @@ class TestEnsemblAPI(TestCase):
 
         self.assertTrue("genotypes" in rs_json.keys())
 
-    @mock.patch("ensemblapi.get_rs", side_effect=fixed_get_rs)
+    @mock.patch("ensemblapi.erequests.map", side_effect=avoid_call)
     def test_can_get_a_list_of_rs(self, mock_get_rs):
 
         rs_list_json = ensemblapi.get_list_of_rs(["rs10050860",
@@ -67,7 +80,8 @@ class TestEnsemblAPI(TestCase):
         self.assertCountEqual(
             rs_list_json, [self.json_data, self.json_data2])
 
-    @mock.patch("ensemblapi.get_rs", side_effect=fixed_get_rs)
+    #@mock.patch("ensemblapi.get_rs", side_effect=fixed_get_rs)
+    @mock.patch("ensemblapi.erequests.map", side_effect=avoid_call)
     def test_fill_a_rs_dict_with_values(self, mock_get_rs):
         self.maxDiff = None
         self.assertEqual(
