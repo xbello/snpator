@@ -44,7 +44,7 @@ def get_list_of_rs(list_of_rs):
     responses = (erequests.async.get(_) for _ in list_of_urls)
 
     # Send every request and get the JSON from each one.
-    return [_.json() for _ in erequests.map(responses)]
+    return [_.json() for _ in erequests.map(responses, size=len(list_of_urls))]
 
 
 def get_rs(rs_id):
