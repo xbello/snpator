@@ -24,8 +24,11 @@ if __name__ == "__main__":
     from tkinter.filedialog import askopenfilename, asksaveasfile
 
     root = tkinter.Tk()
-    filename = askopenfilename()
-    lines = main(filename)
+    filename = askopenfilename(title="Abrir archivo con matriz de genotipos")
 
-    with asksaveasfile() as writing_handler:
-        writing_handler.writelines(lines)
+    if filename:
+        lines = main(filename)
+
+        with asksaveasfile(
+                title="Grabar resultados como...") as writing_handler:
+            writing_handler.writelines(lines)
