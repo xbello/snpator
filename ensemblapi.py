@@ -25,7 +25,7 @@ def get_individual(individual, ensembl_json):
     genotypes = []
 
     for individual_genotype in ensembl_json["genotypes"]:
-        if individual in individual_genotype["individual"]:
+        if individual in individual_genotype["sample"]:
             genotypes.append(individual_genotype)
 
     return genotypes

@@ -9,7 +9,8 @@ def main(matrix):
     rs_list = table_parser.get_rs(matrix)
 
     if rs_list:
-        checks = ensemblapi.get_genotypes(rs_list, ["NA10830", "NA10831"])
+        #checks = ensemblapi.get_genotypes(rs_list, ["NA10830", "NA10831"])
+        checks = ensemblapi.get_genotypes(rs_list, ["NA10860", "NA10861"])
 
         genotypes = table_parser.genotype_to_dict(checks)
 
