@@ -1,6 +1,17 @@
 """Get a list of rs from Ensembl and turns them into a table."""
+import os
 import ensemblapi
 import table_parser
+
+
+def get_ref_genotypes(src="genotypes.txt"):
+    """Return a list with the reference genotypes from a file."""
+    ref_file = os.path.join(os.path.dirname(__file__), src)
+
+    with open(ref_file) as refs:
+        genotypes = [_.rstrip() for _ in refs.readlines()]
+
+    return genotypes
 
 
 def main(matrix):
@@ -9,8 +20,7 @@ def main(matrix):
     rs_list = table_parser.get_rs(matrix)
 
     if rs_list:
-        #checks = ensemblapi.get_genotypes(rs_list, ["NA10830", "NA10831"])
-        checks = ensemblapi.get_genotypes(rs_list, ["NA10860", "NA10861"])
+        checks = ensemblapi.get_genotypes(rs_list, get_ref_genotypes())
 
         genotypes = table_parser.genotype_to_dict(checks)
 

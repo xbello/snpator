@@ -16,7 +16,7 @@ class FakeJSON(object):
         return fixed_get_rs(self.rs)
 
 
-def avoid_call(request_generator):
+def avoid_call(request_generator, size=0):
     return [FakeJSON(_.url.split("?")[0].split("/")[-1])
             for _ in request_generator]
 
@@ -45,10 +45,10 @@ class TestEnsemblAPI(TestCase):
             [{"genotype": "C|C",
               "gender": "Female",
               "submission_id": "ss68942927",
-              "individual": "NA18576"},
+              "sample": "NA18576"},
              {"genotype": "C|C",
               "submission_id": "ss44615098",
-              "individual": "NA18576",
+              "sample": "NA18576",
               "gender": "Female"}])
 
     @mock.patch("ensemblapi.requests.get")
