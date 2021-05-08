@@ -1,5 +1,5 @@
 erequests==0.4.1
-eventlet==0.17.4
+eventlet==0.31.0
 greenlet==0.4.7
 py==1.10.0
 pytest==2.7.1
